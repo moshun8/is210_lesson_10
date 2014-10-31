@@ -16,7 +16,7 @@ GRADES = {
 }
 
 
-def get_summary_score(filename):
+def get_score_summary(filename):
     '''Makes a dict with ID, Boro, and Grade from CSV file'''
 
     inspect = open(filename)
@@ -45,11 +45,11 @@ def get_summary_score(filename):
     bkscore = 0
 
     for score in summary.itervalues():
-        mh = score[1].count('MANHATTAN')
-        bx = score[1].count('BRONX')
-        si = score[1].count('STATEN ISLAND')
-        qn = score[1].count('QUEENS')
-        bk = score[1].count('BROOKLYN')
+        mhcount = score[1].count('MANHATTAN')
+        bxcount = score[1].count('BRONX')
+        sicount = score[1].count('STATEN ISLAND')
+        qncount = score[1].count('QUEENS')
+        bkcount = score[1].count('BROOKLYN')
 
         if score[1] is 'MANHATTAN':
             mhscore += score[1]
@@ -65,13 +65,13 @@ def get_summary_score(filename):
             pass
 
         byboro = {
-        'MANHATTAN': (mh, float(mhscore)/float(mh)),
-        'BRONX': (bx, float(bxscore)/float(bx)),
-        'STATEN ISLAND': (si, float(siscore)/float(si)),
-        'QUEENS': (qn, float(qnscore)/float(qn)),
-        'BROOKLYN': (bk, float(bkscore)/float(bk))
+        'MANHATTAN': (mhcount, float(mhscore)/float(mhcount)),
+        'BRONX': (bxcount, float(bxscore)/float(bxcount)),
+        'STATEN ISLAND': (sicount, float(siscore)/float(sicount)),
+        'QUEENS': (qncount, float(qnscore)/float(qncount)),
+        'BROOKLYN': (bkcount, float(bkscore)/float(bkcount))
         }
     return byboro
-
+print 
 # def get_market_density(filename):
 #     '''docstring'''
