@@ -23,7 +23,7 @@ class PickleCache(object):
     def get(self, key):
         '''Gets key pair from data dict, or returns an error'''
         if key in self._PickleCache__data:
-            return key
+            return self._PickleCache__data[key]
         else:
             print "Error: No value found for key '{}'".format(key)
 
@@ -36,14 +36,16 @@ class PickleCache(object):
         '''Opens file path if it is not empty'''
         if os.path.exists(self._PickleCache__file_path):
             if os.path.getsize(self._PickleCache__file_path) > 0:
-                self._PickleCache__data = pickle.load(self._PickleCache__file_path)
+                self._PickleCache__data = pickle.load(
+                    self._PickleCache__file_path)
                 self._PickleCache__file_path.close()
-        open(self.__file_path, 'w')
+        open(self._PickleCache__file_path, 'wb')
 
     def flush(self, reopen=True):
         '''save stored data'''
-        pickle.dump(reopen, self.__file_object)
-        self.__file_object.close()
+        # pickle.dump(data, file)
+        pickle.dump(self_PickleCache__data, self._PickleCache__file_object)
+        self._PickleCache__file_object.close()
         if reopen:
             self.open()
 
