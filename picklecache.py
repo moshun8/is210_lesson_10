@@ -7,7 +7,7 @@ import os
 import pickle
 
 
-class pickles(object):
+class PickleCache(object):
     '''Pickles are delicious with sandwiches'''
     # __file_path = self.file_path
     __file_object = None
