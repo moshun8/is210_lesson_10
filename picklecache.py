@@ -10,11 +10,12 @@ import pickle
 class PickleCache(object):
     '''Pickles are delicious with sandwiches'''
     # __file_path = self.file_path
-    _PickleCache__file_object = None
+    # _PickleCache__file_object = None
     _PickleCache__data = {}
 
     def __init__(self, file_path='datastore.pkl'):
         self._PickleCache__file_path = file_path
+        self._PickleCache__file_object = None
 
     def set(self, key, value):
         '''Adds pairs to the data dict'''
@@ -36,9 +37,11 @@ class PickleCache(object):
         '''Opens file path if it is not empty'''
         if os.path.exists(self._PickleCache__file_path):
             if os.path.getsize(self._PickleCache__file_path) > 0:
+                self._PickleCache__file_object = open(
+                    self._PickleCache__file_path)
                 self._PickleCache__data = pickle.load(
-                    open(self._PickleCache__file_path))
-                self._PickleCache__file_path.close()
+                    self._PickleCache__file_object)
+                self._PickleCache__file_object.close()
         open(self._PickleCache__file_path, 'wb')
 
     def flush(self, reopen=True):
