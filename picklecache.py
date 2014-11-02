@@ -37,14 +37,14 @@ class PickleCache(object):
         if os.path.exists(self._PickleCache__file_path):
             if os.path.getsize(self._PickleCache__file_path) > 0:
                 self._PickleCache__data = pickle.load(
-                    self._PickleCache__file_path)
+                    open(self._PickleCache__file_path))
                 self._PickleCache__file_path.close()
         open(self._PickleCache__file_path, 'wb')
 
     def flush(self, reopen=True):
         '''save stored data'''
         # pickle.dump(data, file)
-        pickle.dump(self_PickleCache__data, self._PickleCache__file_object)
+        pickle.dump(self._PickleCache__data, self._PickleCache__file_object)
         self._PickleCache__file_object.close()
         if reopen:
             self.open()
