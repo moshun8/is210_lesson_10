@@ -18,22 +18,22 @@ def get_score_summary(filename):
     '''Makes a dict with ID, Boro, and Grade from CSV file'''
 
     inspect = open(filename)
-    # report = csv.reader(inspect, delimiter=',')
-    report = inspect.readlines()
+    report = csv.reader(inspect, delimiter=',')
+    # report = inspect.readlines()
     summary = {}
 
-    for line in report.readlines():
-        info = line.split(',')
-        # idnum = line[0]
-        # boro = line[1]
-        # grade = line[10]
-        idnum = info[0]
-        boro = info[1]
-        grade = info[10]
+    for line in report:
+        # info = line.split(',')
+        idnum = line[0]
+        boro = line[1]
+        grade = line[10]
+        # idnum = info[0]
+        # boro = info[1]
+        # grade = info[10]
         # if grade == 'P' or grade == '' or idnum == 'CAMIS':
-        if grade is 'A' or grade is 'B' or grade is 'C' or (
-            grade is 'D') or grade is 'F':
-                summary[idnum] = (boro, grade)
+        if grade is 'A' or grade is 'B' or grade is 'C' or \
+           grade is 'D' or grade is 'F':
+            summary[idnum] = (boro, grade)
             # return summary
         else:
             continue
@@ -120,6 +120,7 @@ def get_market_density(filename):
                    u'QUEENS': qnnum}
     return gmarketdict
 
+
 def correlate_data(restaurants, greenmarket, combined):
     '''putting the 2 things together'''
     restscores = get_score_summary(restaurants)
@@ -130,6 +131,7 @@ def correlate_data(restaurants, greenmarket, combined):
     mhsat = float(gmarkets['MANHATTAN']/restscores['MANHATTAN'][0])
     bksat = float(gmarkets['BROOKLYN']/restscores['BROOKLYN'][0])
     sisat = float(gmarkets['STATEN ISLAND']/restscores['STATEN ISLAND'][0])
+    
     bothscores = {'BRONX': (restscores['BRONX'][1], bxsat),
                   'MANHATTAN': (restscores['MANHATTAN'][1], mhsat),
                   'BROOKLYN': (restscores['BROOKLYN'][1], bksat),
