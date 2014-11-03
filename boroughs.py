@@ -38,13 +38,18 @@ def get_score_summary(filename):
     inspect.close()
 
     byboro = {}
-    mhscore = 0
-    bxscore = 0
-    siscore = 0
-    qnscore = 0
-    bkscore = 0
+    mhscore = 0.0
+    # mhcount = 0
+    bxscore = 0.0
+    # bxcount = 0
+    siscore = 0.0
+    # sicount = 0
+    qnscore = 0.0
+    # qncount = 0
+    bkscore = 0.0
+    # bkcount = 0
 
-    for score in summary.itervalues():
+    for thekey, score in summary.iteritems():
         mhcount = score[1].count('MANHATTAN')
         bxcount = score[1].count('BRONX')
         sicount = score[1].count('STATEN ISLAND')
@@ -52,24 +57,24 @@ def get_score_summary(filename):
         bkcount = score[1].count('BROOKLYN')
 
         if score[1] is 'MANHATTAN':
-            mhscore += score[1]
+            mhscore += GRADES[score[1]]
         elif score[1] is 'BRONX':
-            bxscore += score[1]
+            bxscore += GRADES[score[1]]
         elif score[1] is 'STATEN ISLAND':
-            siscore += score[1]
+            siscore += GRADES[score[1]]
         elif score[1] is 'QUEENS':
-            qnscore += score[1]
+            qnscore += GRADES[score[1]]
         elif score[1] is 'BROOKLYN':
-            bkscore += score[1]
+            bkscore += GRADES[score[1]]
         else:
             pass
 
     byboro = {
-    'MANHATTAN': (mhcount, float(mhscore)/float(mhcount)),
-    'BRONX': (bxcount, float(bxscore)/float(bxcount)),
-    'STATEN ISLAND': (sicount, float(siscore)/float(sicount)),
-    'QUEENS': (qncount, float(qnscore)/float(qncount)),
-    'BROOKLYN': (bkcount, float(bkscore)/float(bkcount))
+    'MANHATTAN': (mhcount, float(mhscore/mhcount)),
+    'BRONX': (bxcount, float(bxscore/bxcount)),
+    'STATEN ISLAND': (sicount, float(siscore/sicount)),
+    'QUEENS': (qncount, float(qnscore/qncount)),
+    'BROOKLYN': (bkcount, float(bkscore/bkcount))
     }
     return byboro
 # print 
