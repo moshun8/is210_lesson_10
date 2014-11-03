@@ -7,38 +7,41 @@ import csv
 import json
 
 
-GRADES = {
-    'A': float(1.0),
-    'B': float(0.9),
-    'C': float(0.8),
-    'D': float(0.7),
-    'F': float(0.6)
-}
+GRADES = {'A': float(1.0),
+          'B': float(0.9),
+          'C': float(0.8),
+          'D': float(0.7),
+          'F': float(0.6)}
 
 
 def get_score_summary(filename):
     '''Makes a dict with ID, Boro, and Grade from CSV file'''
 
     inspect = open(filename)
-    report = csv.reader(inspect)
-    # inspect.readline()
+    # report = csv.reader(inspect)
+    inspect.readline()
     summary = {}
 
-    for line in report:
-        # info = line.split(',')
-        idnum = line[0]
-        boro = line[1]
-        grade = line[10]
-        if grade == 'A' or grade == 'B' or grade == 'C' or (
-            grade == 'D') or grade == 'F':
-            summary[idnum] = (boro, grade)
+    for line in inspect.readlines():
+        info = line.split(',')
+        # idnum = line[0]
+        # boro = line[1]
+        # grade = line[10]
+        idnum = info[0]
+        boro = info[1]
+        grade = info[10]
+        if grade == 'P' or grade == '' or idnum == 'CAMIS':
+        # if grade is 'A' or grade is 'B' or grade is 'C' 
+        # or grade is 'D' or grade is 'F':
+            # summary[idnum] = (boro, grade)
+            continue
             # return summary
         else:
-            continue
+            summary[idnum] = (boro, grade)
     # return summary
     inspect.close()
 
-    byboro = {}
+    # byboro = {}
     mhscore = 0.0
     mhcount = 0
     bxscore = 0.0
@@ -122,11 +125,15 @@ def correlate_data(restaurants, greenMarket, combined):
     '''putting the 2 things together'''
     restscores = get_score_summary(restaurants)
     gmarkets = get_market_density(greenMarket)
-    bothScores = {
-    'BRONX': (restscores, gmarkets),
-    'MANHATTAN': (restscores, gmarkets),
-    'BROOKLYN': (restscores, gmarkets),
-    'QUEENS': (restscores, gmarkets),
-    'STATEN ISLAND': (restscores, gmarkets)
-    }
-    json.dump(bothScores, combined)
+    # market saturation --> number of markets / number restaurants
+    bxsat = float(gmarkets['BRONX']/restscores['BRONX'][0])
+    qnsat = float(gmarkets['QUEENS']/restscores['QUEENS'][0])
+    mhsat = float(gmarkets['MANHATTAN']/restscores['MANHATTAN'][0])
+    bksat = float(gmarkets['BROOKLYN']/restscores['BROOKLYN'][0])
+    sisat = float(gmarkets['STATEN ISLAND']/restscores['STATEN ISLAND'][0])
+    bothscores = {'BRONX': (restscores['BRONX'][1], bxsat),
+                  'MANHATTAN': (restscores['MANHATTAN'][1], mhsat),
+                  'BROOKLYN': (restscores['BROOKLYN'][1], bksat),
+                  'QUEENS': (restscores['QUEENS'][1], qnsat),
+                  'STATEN ISLAND': (restscores['STATEN ISLAND'][1], sisat)}
+    json.dump(bothscores, combined)
