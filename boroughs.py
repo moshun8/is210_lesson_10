@@ -64,14 +64,61 @@ def get_score_summary(filename):
         else:
             pass
 
-        byboro = {
-        'MANHATTAN': (mhcount, float(mhscore)/float(mhcount)),
-        'BRONX': (bxcount, float(bxscore)/float(bxcount)),
-        'STATEN ISLAND': (sicount, float(siscore)/float(sicount)),
-        'QUEENS': (qncount, float(qnscore)/float(qncount)),
-        'BROOKLYN': (bkcount, float(bkscore)/float(bkcount))
-        }
+    byboro = {
+    'MANHATTAN': (mhcount, float(mhscore)/float(mhcount)),
+    'BRONX': (bxcount, float(bxscore)/float(bxcount)),
+    'STATEN ISLAND': (sicount, float(siscore)/float(sicount)),
+    'QUEENS': (qncount, float(qnscore)/float(qncount)),
+    'BROOKLYN': (bkcount, float(bkscore)/float(bkcount))
+    }
     return byboro
-print 
-# def get_market_density(filename):
-#     '''docstring'''
+# print 
+
+
+def get_market_density(filename):
+    '''opens a JSON file type'''
+    gmarketFile = open(filename, 'r')
+    gmarketData = json.load(gmarketFile)
+    gmarketDict = {}
+    mhnum = 0
+    bxnum = 0
+    sinum = 0
+    bknum = 0
+    qnnum = 0
+
+    for entry in gmarketData['data']:
+        boro = entry[8]
+        boros = boro[:4]
+        if boros is 'Manh':
+            mhnum += 1
+        elif boros is 'Bron':
+            bxnum += 1
+        elif boros is 'Broo':
+            bknum += 1
+        elif boros is 'Stat':
+            sinum += 1
+        elif boros is 'Quee':
+            qnnum += 1
+
+    # gmarketFile.close()
+
+    gmarketDict = {
+    u'STATEN ISLAND': sinum,
+    u'BRONX': bxnum,
+    u'BROOKLYN': bknum,
+    u'MANHATTAN': mhnum,
+    u'QUEENS': qnnum
+    }
+
+def correlate_data(restaurants, greenMarket, combined):
+    '''putting the 2 things together'''
+    restscores = get_score_summary(restaurants)
+    gmarkets = get_market_density(greenMarket)
+    bothScores = {
+    'BRONX': (restscores, gmarkets),
+    'MANHATTAN': (restscores, gmarkets),
+    'BROOKLYN': (restscores, gmarkets),
+    'QUEENS': (restscores, gmarkets),
+    'STATEN ISLAND': (restscores, gmarkets)
+    }
+    json.dump(bothScores, combined)

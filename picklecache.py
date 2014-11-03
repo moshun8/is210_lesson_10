@@ -47,7 +47,7 @@ class PickleCache(object):
     def flush(self, reopen=True):
         '''save stored data'''
         # pickle.dump(data, file)
-        pickle.dump(self._PickleCache__data, self._PickleCache__file_object)
+        pickle.dump(self._PickleCache__data, self._PickleCache__file_path)
         self._PickleCache__file_object.close()
         if reopen:
             self.open()
