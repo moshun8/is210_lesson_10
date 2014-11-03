@@ -18,27 +18,24 @@ def get_score_summary(filename):
     '''Makes a dict with ID, Boro, and Grade from CSV file'''
 
     inspect = open(filename)
-    # report = csv.reader(inspect)
-    inspect.readline()
+    report = csv.reader(inspect)
     summary = {}
 
-    for line in inspect.readlines():
-        info = line.split(',')
-        # idnum = line[0]
-        # boro = line[1]
-        # grade = line[10]
-        idnum = info[0]
-        boro = info[1]
-        grade = info[10]
-        if grade == 'P' or grade == '' or idnum == 'CAMIS':
-        # if grade is 'A' or grade is 'B' or grade is 'C' 
-        # or grade is 'D' or grade is 'F':
-            # summary[idnum] = (boro, grade)
-            continue
+    for line in report:
+        # info = line.split(',')
+        idnum = line[0]
+        boro = line[1]
+        grade = line[10]
+        # idnum = info[0]
+        # boro = info[1]
+        # grade = info[10]
+        # if grade == 'P' or grade == '' or idnum == 'CAMIS':
+        if grade is 'A' or grade is 'B' or grade is 'C' or (
+            grade is 'D') or grade is 'F':
+                summary[idnum] = (boro, grade)
             # return summary
         else:
-            summary[idnum] = (boro, grade)
-    # return summary
+            continue
     inspect.close()
 
     # byboro = {}
@@ -87,11 +84,12 @@ def get_score_summary(filename):
     }
     return byboro
 
+
 def get_market_density(filename):
     '''opens a JSON file type'''
     gmarketfile = open(filename, 'r')
     gmarketdata = json.load(gmarketfile)
-    gmarketDict = {}
+    # gmarketdict = {}
     mhnum = 0
     bxnum = 0
     sinum = 0
@@ -114,17 +112,17 @@ def get_market_density(filename):
 
     # gmarketFile.close()
 
-    gmarketDict = {u'STATEN ISLAND': sinum,
-        u'BRONX': bxnum,
-        u'BROOKLYN': bknum,
-        u'MANHATTAN': mhnum,
-        u'QUEENS': qnnum
-    }
+    gmarketdict = {u'STATEN ISLAND': sinum,
+                   u'BRONX': bxnum,
+                   u'BROOKLYN': bknum,
+                   u'MANHATTAN': mhnum,
+                   u'QUEENS': qnnum}
+    return gmarketdict
 
-def correlate_data(restaurants, greenMarket, combined):
+def correlate_data(restaurants, greenmarket, combined):
     '''putting the 2 things together'''
     restscores = get_score_summary(restaurants)
-    gmarkets = get_market_density(greenMarket)
+    gmarkets = get_market_density(greenmarket)
     # market saturation --> number of markets / number restaurants
     bxsat = float(gmarkets['BRONX']/restscores['BRONX'][0])
     qnsat = float(gmarkets['QUEENS']/restscores['QUEENS'][0])
@@ -136,4 +134,5 @@ def correlate_data(restaurants, greenMarket, combined):
                   'BROOKLYN': (restscores['BROOKLYN'][1], bksat),
                   'QUEENS': (restscores['QUEENS'][1], qnsat),
                   'STATEN ISLAND': (restscores['STATEN ISLAND'][1], sisat)}
-    json.dump(bothscores, combined)
+    opencombined = open(combined, 'w')
+    json.dump(bothscores, opencombined)
