@@ -18,7 +18,7 @@ def get_score_summary(filename):
     '''Makes a dict with ID, Boro, and Grade from CSV file'''
 
     inspect = open(filename)
-    report = csv.reader(inspect)
+    report = csv.reader(inspect, delimiter=',')
     summary = {}
 
     for line in report:
