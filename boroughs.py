@@ -18,17 +18,18 @@ def get_score_summary(filename):
     '''Makes a dict with ID, Boro, and Grade from CSV file'''
 
     inspect = open(filename)
-    report = csv.reader(inspect, delimiter=',')
+    # report = csv.reader(inspect, delimiter=',')
+    report = inspect.readlines()
     summary = {}
 
-    for line in report:
-        # info = line.split(',')
-        idnum = line[0]
-        boro = line[1]
-        grade = line[10]
-        # idnum = info[0]
-        # boro = info[1]
-        # grade = info[10]
+    for line in report.readlines():
+        info = line.split(',')
+        # idnum = line[0]
+        # boro = line[1]
+        # grade = line[10]
+        idnum = info[0]
+        boro = info[1]
+        grade = info[10]
         # if grade == 'P' or grade == '' or idnum == 'CAMIS':
         if grade is 'A' or grade is 'B' or grade is 'C' or (
             grade is 'D') or grade is 'F':
