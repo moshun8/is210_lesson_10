@@ -29,7 +29,8 @@ def get_score_summary(filename):
         idnum = line[0]
         boro = line[1]
         grade = line[10]
-        if grade == 'A' or 'B' or 'C' or 'D' or 'F':
+        if grade == 'A' or grade == 'B' or grade == 'C' or (
+            grade == 'D') or grade == 'F':
             summary[idnum] = (boro, grade)
             # return summary
         else:
@@ -49,37 +50,37 @@ def get_score_summary(filename):
     bkscore = 0.0
     bkcount = 0
 
-    for thekey, score in summary.iteritems():
+    for score in summary.itervalues():
         # mhcount = score[1].count('MANHATTAN')
         # bxcount = score[1].count('BRONX')
         # sicount = score[1].count('STATEN ISLAND')
         # qncount = score[1].count('QUEENS')
         # bkcount = score[1].count('BROOKLYN')
 
-        if score[1] is 'MANHATTAN':
+        if score[0] is 'MANHATTAN':
             mhscore += GRADES[score[1]]
             mhcount += 1
-        elif score[1] is 'BRONX':
+        elif score[0] is 'BRONX':
             bxscore += GRADES[score[1]]
             bxcount += 1
-        elif score[1] is 'STATEN ISLAND':
+        elif score[0] is 'STATEN ISLAND':
             siscore += GRADES[score[1]]
             sicount += 1
-        elif score[1] is 'QUEENS':
+        elif score[0] is 'QUEENS':
             qnscore += GRADES[score[1]]
             qncount += 1
-        elif score[1] is 'BROOKLYN':
+        elif score[0] is 'BROOKLYN':
             bkscore += GRADES[score[1]]
             bkcount += 1
         else:
             pass
 
     byboro = {
-        'MANHATTAN': (mhcount, float(mhscore/mhcount)),
-        'BRONX': (bxcount, float(bxscore/bxcount)),
-        'STATEN ISLAND': (sicount, float(siscore/sicount)),
-        'QUEENS': (qncount, float(qnscore/qncount)),
-        'BROOKLYN': (bkcount, float(bkscore/bkcount))
+        'MANHATTAN': (mhcount, float(mhscore)/float(mhcount)),
+        'BRONX': (bxcount, float(bxscore)/float(bxcount)),
+        'STATEN ISLAND': (sicount, float(siscore)/float(sicount)),
+        'QUEENS': (qncount, float(qnscore)/float(qncount)),
+        'BROOKLYN': (bkcount, float(bkscore)/float(bkcount))
     }
     return byboro
 
